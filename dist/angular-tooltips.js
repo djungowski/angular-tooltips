@@ -5,24 +5,24 @@
         return {
             restrict: 'A',
             scope: {
-                title: '@',
-                fixedPosition: '=',
-                titleClass: '@',
+                tooltip: '@',
+                tooltipFixedPosition: '=',
+                tooltipClass: '@',
             },
             link: function ($scope, element, attrs) {
                 // adds the tooltip to the body
                 $scope.createTooltip = function (event) {
-                    if (attrs.title || attrs.tooltip) {
+                    if (attrs.tooltip) {
                         var direction = $scope.getDirection();
 
                         // create the tooltip
-                        $scope.tooltipElement = angular.element('<div>').addClass('angular-tooltip').addClass($scope.titleClass);
+                        $scope.tooltipElement = angular.element('<div>').addClass('angular-tooltip').addClass($scope.tooltipClass);
 
                         // append to the body
                         angular.element(document).find('body').append($scope.tooltipElement);
 
                         // update the contents and position
-                        $scope.updateTooltip(attrs.title || attrs.tooltip);
+                        $scope.updateTooltip(attrs.tooltip);
 
                         // fade in
                         $scope.tooltipElement.addClass('angular-tooltip-fade-in');
@@ -42,13 +42,13 @@
 
                     // stop the standard tooltip from being shown
                     $timeout(function () {
-                        element.removeAttr('ng-attr-title');
-                        element.removeAttr('title');
+                        element.removeAttr('ng-attr-tooltip');
+                        element.removeAttr('tooltip');
                     });
                 };
 
                 // if the title changes the update the tooltip
-                $scope.$watch('title', function(newTitle) {
+                $scope.$watch('tooltip', function(newTitle) {
                     if ($scope.tooltipElement) {
                         $scope.updateTooltip(newTitle);
                     }
@@ -57,16 +57,12 @@
                 // removes all tooltips from the document to reduce ghosts
                 $scope.removeTooltip = function () {
                     var tooltip = angular.element(document.querySelectorAll('.angular-tooltip'));
-                    // tooltip.removeClass('angular-tooltip-fade-in');
-
-                    // $timeout(function() {
-                        tooltip.remove();
-                    // }, 300);
+                    tooltip.remove();
                 };
 
                 // gets the current direction value
                 $scope.getDirection = function() {
-                    return element.attr('tooltip-direction') || element.attr('title-direction') || 'top';
+                    return element.attr('tooltip-direction') || 'top';
                 };
 
                 // calculates the position of the tooltip
@@ -106,7 +102,7 @@
                     }
 
                     // check if the tooltip is outside the bounds of the window
-                    if ($scope.fixedPosition) {
+                    if ($scope.tooltipFixedPosition) {
                         if (pos.left < scrollLeft) {
                             newDirection = direction.replace('left', 'right');
                         } else if ((pos.left + tooltipBounding.width) > (window.innerWidth + scrollLeft)) {
@@ -139,7 +135,7 @@
                     return searchString.indexOf(findString) !== -1;
                 };
 
-                if (attrs.title || attrs.tooltip) {
+                if (attrs.tooltip) {
                     // attach events to show tooltip
                     element.on('mouseover', $scope.createTooltip);
                     element.on('mouseout', $scope.removeTooltip);
@@ -158,7 +154,6 @@
     directive.$inject = ['$timeout', '$compile'];
 
     angular
-        .module('tooltips', [])
-        .directive('title', directive)
+        .module('ng-tooltips', [])
         .directive('tooltip', directive);
 })();
