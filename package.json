@@ -1,6 +1,6 @@
 {
-  "name": "angularjs-tooltips",
-  "version": "1.0.5",
+  "name": "ng-tooltips",
+  "version": "1.0.0",
   "license": "MIT",
   "main": "dist/angular-tooltips.js",
   "engines": {
@@ -9,7 +9,7 @@
   "dependencies": {},
   "repository": {
     "type": "git",
-    "url": "git://github.com/Intellipharm/angular-tooltips.git"
+    "url": "git://github.com/djungowski/angular-tooltips.git"
   },
   "devDependencies": {
     "del": "^3.0.0",
